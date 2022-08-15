@@ -1,7 +1,9 @@
 package datastructure.dynamicarray;
 
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 
@@ -23,84 +25,45 @@ public class DynamicArrayTest {
     }
 
     @Test
-    public void testRemoveAtOnEmptyList() {
+    public void testListSize() {
+        dynamicArray.add(1);
+        dynamicArray.add(2);
+        dynamicArray.add(3);
+        assertFalse(dynamicArray.isEmpty());
+        assertEquals(3, dynamicArray.size());
+    }
+
+    @Test
+    public void testGet() {
+        dynamicArray.add(1);
+        dynamicArray.add(2);
+        dynamicArray.add(3);
+        assertEquals(1, dynamicArray.get(0));
+        assertEquals(3, dynamicArray.get(2));
         assertThrows(IndexOutOfBoundsException.class,
                 () -> {
-                    dynamicArray.removeAt(0);
+                    dynamicArray.get(5);
                 });
+
+        IndexOutOfBoundsException exception = assertThrows(IndexOutOfBoundsException.class,
+                () -> {
+                    dynamicArray.get(-1);
+                });
+        assertEquals("Provide Index within Range", exception.getMessage());
     }
 
     @Test
-    public void testRemoveOnEmptyList() {
-        assertFalse(dynamicArray.remove(0));
-    }
-
-
-    @Test
-    public void testAdd() {
-        assertTrue(dynamicArray.isEmpty());
-        dynamicArray.add(0);
-        assertFalse(dynamicArray.isEmpty());
-        assertEquals(1, dynamicArray.size());
+    public void testSet() {
         dynamicArray.add(1);
-        assertFalse(dynamicArray.isEmpty());
-        assertEquals(2, dynamicArray.size());
-        dynamicArray.add(2);
-        assertFalse(dynamicArray.isEmpty());
-        assertEquals(3, dynamicArray.size());
-    }
-
-    @Test
-    public void testRemove() {
-        dynamicArray.add(1);
-        dynamicArray.add(2);
-        dynamicArray.add(3);
-        dynamicArray.add(4);
-        dynamicArray.add(5);
-        dynamicArray.remove(1);
-        dynamicArray.remove(5);
-        dynamicArray.remove(2);
-        dynamicArray.remove(3);
-        dynamicArray.remove(4);
-        assertEquals(0, dynamicArray.size());
-        assertTrue(dynamicArray.isEmpty());
-    }
-
-    @Test
-    public void testRemoveAt() {
-        dynamicArray.add(1);
-        dynamicArray.add(2);
-        dynamicArray.add(3);
-        dynamicArray.add(4);
-        dynamicArray.add(5);
-        assertEquals(2, (int) dynamicArray.removeAt(1));
-        assertEquals(4, dynamicArray.size());
-        assertEquals(3, (int) dynamicArray.removeAt(1));
-        assertEquals(3, dynamicArray.size());
-        assertEquals(1, (int) dynamicArray.removeAt(0));
-        assertEquals(2, dynamicArray.size());
-    }
-
-
-    @Test
-    public void testContains() {
-        dynamicArray.add(1);
-        assertTrue(dynamicArray.contains(1));
-        dynamicArray.remove(1);
-        assertFalse(dynamicArray.contains(1));
-    }
-
-    @Test
-    public void testIndexOf() {
-        dynamicArray.add(1);
-        dynamicArray.add(2);
-        dynamicArray.add(3);
-        dynamicArray.add(4);
-        dynamicArray.add(5);
-        assertEquals(0, dynamicArray.indexOf(1));
-        assertEquals(1, dynamicArray.indexOf(2));
-        dynamicArray.removeAt(0);
-        assertEquals(0, dynamicArray.indexOf(2));
+        dynamicArray.set(0, 2);
+        assertEquals(2, dynamicArray.get(0));
+        dynamicArray.set(0, 3);
+        assertEquals(3, dynamicArray.get(0));
+        IndexOutOfBoundsException exception = assertThrows(IndexOutOfBoundsException.class,
+                () -> {
+                    dynamicArray.set(5, 2);
+                });
+        assertEquals("Provide Index within Range", exception.getMessage());
     }
 
     @Test
@@ -125,6 +88,84 @@ public class DynamicArrayTest {
         assertTrue(dynamicArray.isEmpty());
     }
 
+    @Test
+    public void testRemoveAt() {
+        dynamicArray.add(1);
+        dynamicArray.add(2);
+        dynamicArray.add(3);
+        dynamicArray.add(4);
+        dynamicArray.add(5);
+        assertEquals(2, (int) dynamicArray.removeAt(1));
+        assertEquals(4, dynamicArray.size());
+        assertEquals(3, (int) dynamicArray.removeAt(1));
+        assertEquals(3, dynamicArray.size());
+        assertEquals(1, (int) dynamicArray.removeAt(0));
+        assertEquals(2, dynamicArray.size());
+    }
+
+    @Test
+    public void testAdd() {
+        assertTrue(dynamicArray.isEmpty());
+        dynamicArray.add(0);
+        assertFalse(dynamicArray.isEmpty());
+        assertEquals(1, dynamicArray.size());
+        dynamicArray.add(1);
+        assertFalse(dynamicArray.isEmpty());
+        assertEquals(2, dynamicArray.size());
+        dynamicArray.add(2);
+        assertFalse(dynamicArray.isEmpty());
+        assertEquals(3, dynamicArray.size());
+    }
+
+    @Test
+    public void testRemoveAtOnEmptyList() {
+        assertThrows(IndexOutOfBoundsException.class,
+                () -> {
+                    dynamicArray.removeAt(0);
+                });
+    }
+
+    @Test
+    public void testRemoveOnEmptyList() {
+        assertFalse(dynamicArray.remove(0));
+    }
+
+    @Test
+    public void testRemove() {
+        dynamicArray.add(1);
+        dynamicArray.add(2);
+        dynamicArray.add(3);
+        dynamicArray.add(4);
+        dynamicArray.add(5);
+        dynamicArray.remove(1);
+        dynamicArray.remove(5);
+        dynamicArray.remove(2);
+        dynamicArray.remove(3);
+        dynamicArray.remove(4);
+        assertEquals(0, dynamicArray.size());
+        assertTrue(dynamicArray.isEmpty());
+    }
+
+    @Test
+    public void testIndexOf() {
+        dynamicArray.add(1);
+        dynamicArray.add(2);
+        dynamicArray.add(3);
+        dynamicArray.add(4);
+        dynamicArray.add(5);
+        assertEquals(0, dynamicArray.indexOf(1));
+        assertEquals(1, dynamicArray.indexOf(2));
+        dynamicArray.removeAt(0);
+        assertEquals(0, dynamicArray.indexOf(2));
+    }
+
+    @Test
+    public void testContains() {
+        dynamicArray.add(1);
+        assertTrue(dynamicArray.contains(1));
+        dynamicArray.remove(1);
+        assertFalse(dynamicArray.contains(1));
+    }
 
     @Test
     public void testIteratorOneElementInQueue() {

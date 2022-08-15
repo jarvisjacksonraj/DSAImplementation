@@ -2,16 +2,27 @@ package datastructure.dynamicarray;
 
 import java.util.Iterator;
 
+/**
+ * Dynamic Array using Generics <T>
+ * Default Initial Capacity - 16
+ *
+ * @param <T>
+ *     T is Generic Type
+ */
+
+@SuppressWarnings("unchecked")
 public class DynamicArray<T> implements Iterable<T> {
 
-    T[] intArray;
-    int arrayCapacity;
-    int arrayLength = 0;
+    private T[] intArray;           //  Internal Static Array
+    private int arrayCapacity;      //  Actual Array Size
+    private int arrayLength = 0;    //  Length of the Array User thinks (Exposed using size method)
 
+    // Default Constructor
     public DynamicArray() {
-        this(16);
+        this(16);           //  Default Size
     }
 
+    // Param Constructor for initializing array with capacity
     public DynamicArray(int capacity) {
         if (capacity <= 0) throw new IllegalArgumentException("Illegal Initial Capacity of Array: " + capacity);
         this.arrayCapacity = capacity;
@@ -25,16 +36,26 @@ public class DynamicArray<T> implements Iterable<T> {
         arrayCapacity = arrayLength = array.length;
     }
 
+    // return the size of values stored in array
+    public int size() {
+        return arrayLength;
+    }
+
+    // return the whether the array is empty or not
+    public boolean isEmpty() {
+        return arrayLength == 0;
+    }
+
     public T get(int index) {
         if (index > arrayLength || index < 0) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Provide Index within Range");
         }
         return intArray[index];
     }
 
     public T set(int index, T element) {
         if (index > arrayLength || index < 0) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Provide Index within Range");
         }
         return intArray[index] = element;
     }
@@ -46,13 +67,6 @@ public class DynamicArray<T> implements Iterable<T> {
         arrayLength = 0;
     }
 
-    public int size() {
-        return arrayLength;
-    }
-
-    public boolean isEmpty() {
-        return arrayLength == 0;
-    }
 
     public void add(T element) {
         if (arrayLength + 1 >= arrayCapacity) {
