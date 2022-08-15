@@ -6,8 +6,7 @@ import java.util.Iterator;
  * Dynamic Array using Generics <T>
  * Default Initial Capacity - 16
  *
- * @param <T>
- *     T is Generic Type
+ * @param <T> T is Generic Type
  */
 
 @SuppressWarnings("unchecked")
@@ -46,6 +45,7 @@ public class DynamicArray<T> implements Iterable<T> {
         return arrayLength == 0;
     }
 
+    // Get the Element by Index
     public T get(int index) {
         if (index > arrayLength || index < 0) {
             throw new IndexOutOfBoundsException("Provide Index within Range");
@@ -53,6 +53,7 @@ public class DynamicArray<T> implements Iterable<T> {
         return intArray[index];
     }
 
+    // Set the Element by Index
     public T set(int index, T element) {
         if (index > arrayLength || index < 0) {
             throw new IndexOutOfBoundsException("Provide Index within Range");
@@ -60,6 +61,7 @@ public class DynamicArray<T> implements Iterable<T> {
         return intArray[index] = element;
     }
 
+    // Clear all the Elements
     public void clear() {
         for (int index = 0; index < arrayCapacity; index++) {
             intArray[index] = null;
@@ -67,7 +69,10 @@ public class DynamicArray<T> implements Iterable<T> {
         arrayLength = 0;
     }
 
-
+    /* Add Element to end of Array, Normally O(1),
+     but in case of resize it will double the array size O(n)
+     and append the element
+     */
     public void add(T element) {
         if (arrayLength + 1 >= arrayCapacity) {
             if (arrayCapacity == 0) {
@@ -76,14 +81,15 @@ public class DynamicArray<T> implements Iterable<T> {
                 arrayCapacity = arrayCapacity * 2;
             }
             T[] newArray = (T[]) new Object[arrayCapacity];
-            for (int i = 0; i < arrayLength; i++) {
-                newArray[i] = intArray[i];
+            if (arrayLength >= 0) {
+                System.arraycopy(intArray, 0, newArray, 0, arrayLength);
             }
             intArray = newArray;
         }
         intArray[arrayLength++] = element;
     }
 
+    // Removed Element at given Index
     public T removeAt(int index) {
         if (index >= arrayLength || index < 0) {
             throw new IndexOutOfBoundsException();
@@ -102,6 +108,7 @@ public class DynamicArray<T> implements Iterable<T> {
         return data;
     }
 
+    // Removed Given Element
     public boolean remove(T element) {
         for (int i = 0; i < arrayLength; i++) {
             if (intArray[i].equals(element)) {
@@ -112,6 +119,7 @@ public class DynamicArray<T> implements Iterable<T> {
         return false;
     }
 
+    // Return the Element index
     public int indexOf(T element) {
         for (int i = 0; i < arrayLength; i++) {
             if (intArray[i].equals(element)) {
@@ -121,10 +129,12 @@ public class DynamicArray<T> implements Iterable<T> {
         return -1;
     }
 
+    // Return True If element is present
     public boolean contains(T element) {
         return indexOf(element) != -1;
     }
 
+    // Reverse the Array
     public void reverse() {
         for (int i = 0; i < arrayLength / 2; i++) {
             T tmp = intArray[i];
@@ -133,6 +143,7 @@ public class DynamicArray<T> implements Iterable<T> {
         }
     }
 
+    // Print the Object as DynamicArray: [] with toString
     @Override
     public String toString() {
         if (arrayLength == 0) {
@@ -140,13 +151,13 @@ public class DynamicArray<T> implements Iterable<T> {
         } else {
             StringBuilder sb = new StringBuilder(arrayLength).append("[");
             for (int i = 0; i < arrayLength - 1; i++) {
-                sb.append(intArray[i] + ", ");
+                sb.append(intArray[i]).append(", ");
             }
-            return sb.append(intArray[arrayLength - 1] + "]").toString();
+            return sb.append(intArray[arrayLength - 1]).append("]").toString();
         }
     }
 
-
+    // Iterator for iterating Array
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {

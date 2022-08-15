@@ -115,6 +115,12 @@ public class DynamicArrayTest {
         dynamicArray.add(2);
         assertFalse(dynamicArray.isEmpty());
         assertEquals(3, dynamicArray.size());
+        for (int i = 4; i < 16; i++) {
+            dynamicArray.add(i);
+        }
+        dynamicArray.add(16);
+        assertFalse(dynamicArray.isEmpty());
+        assertEquals(16, dynamicArray.size());
     }
 
     @Test
